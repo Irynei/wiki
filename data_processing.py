@@ -40,6 +40,9 @@ def merge_pages():
     contributors = read_csv("contributions_by_username_or_ip_all_uk_pages.csv")
     not_translated_views = read_csv("not_translated_views_from_2018.csv")
     translated_views = read_csv("translated_views_from_2018.csv")
+    incoming_links = read_csv("count_of_incoming_links.csv")
+    outgoing_links = read_csv("count_of_outgoing_links.csv")
+
 
     not_translated_views = filter_views(not_translated_views)
     translated_views = filter_views(translated_views)
@@ -72,6 +75,12 @@ def merge_pages():
 
     translated, not_translated = merge(translated, not_translated, contributors, 'inner', 'page_id',
                                        'page_id')
+
+    translated, not_translated = merge(translated, not_translated, outgoing_links, 'inner', 'page_id',
+                                       'page_id')
+
+    translated, not_translated = merge(translated, not_translated, incoming_links, 'inner', 'title',
+                                       'title')
 
     not_translated = pd.merge(not_translated, not_translated_views, how='inner', on=['page_id'])
     translated = pd.merge(translated, translated_views, how='inner', on=['page_id'])
