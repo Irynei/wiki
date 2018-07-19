@@ -90,7 +90,7 @@ def merge_pages():
 
     return translated, not_translated
 
-
-translated_filtered, not_translated_filtered = merge_pages()
-translated_filtered.to_csv('data/translated_filtered.csv', index=False)
-not_translated_filtered.to_csv('data/not_translated_filtered.csv', index=False)
+if __name__ == '__main__':
+    translated_filtered, not_translated_filtered = merge_pages()
+    translated_filtered.to_csv('data/translated_filtered.csv', index=False)
+    not_translated_filtered.to_csv('data/not_translated_filtered.csv', index=False)
