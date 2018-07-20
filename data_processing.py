@@ -7,6 +7,7 @@ def read_csv(file_name):
 
 
 def filter_views(data):
+    """ Get average views from monthly """
     data = data.drop(columns=["Unnamed: 0", "6"])
     data[data == 0] = np.nan
     average = data.drop(columns=["page_id", "title"]).apply(lambda x: np.nanmean(x), axis=1)
@@ -15,6 +16,7 @@ def filter_views(data):
 
 
 def merge(translated, not_translated, other, how, left_on, right_on):
+    """ Merge translated and not_translated """
     translated = pd.merge(left=translated,
                           right=other,
                           how=how,
@@ -30,6 +32,7 @@ def merge(translated, not_translated, other, how, left_on, right_on):
 
 
 def merge_pages():
+    # read all data
     not_translated = read_csv("uk_not_translated.csv")
     translated = read_csv("uk_translated.csv")
     all_articles = read_csv("all_uk_pages.csv")
@@ -43,12 +46,14 @@ def merge_pages():
     incoming_links = read_csv("count_of_incoming_links.csv")
     outgoing_links = read_csv("count_of_outgoing_links.csv")
 
-
+    # get average views
     not_translated_views = filter_views(not_translated_views)
     translated_views = filter_views(translated_views)
-
+    
+    # drop useless columns
     first_edit = first_edit.drop(columns=["first_edit", "end_date"], axis=1)
-
+    
+    # merge translated and not_translated with each feature
     translated, not_translated = merge(translated, not_translated, all_articles, 'inner', 'title',
                                        'title')
 
